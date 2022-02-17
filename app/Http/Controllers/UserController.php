@@ -115,6 +115,7 @@ class UserController extends Controller
 
         $userUpdate = User::where('phone', $request->phone)
             ->update([
+                'otp_verified' => 0,
                 'otp' => $otp,
                 'lastlogin' => now()
             ]);
@@ -208,7 +209,7 @@ class UserController extends Controller
 
         $userUpdate = User::where('phone', $request->phone)
             ->update([
-                'otp_verified' => 1,
+                'kyc_updated' => 1,
                 'name' => $request->name,
                 'year_of_birth' => $request->year_of_birth,
                 'gender' => $request->gender
