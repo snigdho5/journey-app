@@ -23,6 +23,7 @@ Route::post("login-email", [UserController::class, 'login']);
 Route::post("register", [UserController::class, 'register']);
 
 
+Route::get("test", [UserController::class, 'index']);
 Route::post("login", [UserController::class, 'otpLogin']);
 Route::post("verify-otp", [UserController::class, 'verifyOtp']);
 

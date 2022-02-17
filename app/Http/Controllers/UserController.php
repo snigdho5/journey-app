@@ -13,7 +13,7 @@ class UserController extends Controller
     //  
     function index(Request $request)
     {
-        //
+        echo 'hi';die;
     }
 
     public function register(Request $request)
@@ -32,7 +32,7 @@ class UserController extends Controller
             ], 401);
         }
 
-        $user = User::where('email', $request->email)->first();
+        $user = User::where('email', $request->email)->orWhere('phone', $request->phone)->first();
         // print_r($user);die;
         if (!$user) {
 
