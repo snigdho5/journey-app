@@ -96,7 +96,7 @@ class UserController extends Controller
             return response(['status' => 0, 'message' => 'Validation failed!'], 401);
         }
 
-        $otp = rand(1000, 9999);
+        $otp = rand(100000, 999999);
         $user = User::where('phone', $request->phone)->first();
         // print_r($user);die;
         if (!$user) {
@@ -146,7 +146,7 @@ class UserController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'phone' => 'required|numeric|digits:10',
-            'otp' => 'required|numeric|digits:4'
+            'otp' => 'required|numeric|digits:6'
         ]);
         if ($validator->fails()) {
             return response(['status' => 0, 'message' => 'Validation failed!'], 401);
@@ -192,6 +192,7 @@ class UserController extends Controller
             'name' => 'required',
             'year_of_birth' => 'required|numeric|digits:4',
             'gender' => 'required',
+            'file' => 'required|mimes:jpg,png,jpeg|max:2048'
         ]);
         if ($validator->fails()) {
             return response(['status' => 0, 'message' => 'Validation failed!'], 401);
@@ -208,12 +209,18 @@ class UserController extends Controller
             ], 404);
         }
 
+        if ($request->file()) {
+            $fileName = time() . '_' . $request->file->getClientOriginalName();
+            $request->file->move(public_path('uploads'), $fileName);
+        }
+
         $userUpdate = User::where('phone', $request->phone)
             ->update([
                 'kyc_updated' => 1,
                 'name' => $request->name,
                 'year_of_birth' => $request->year_of_birth,
-                'gender' => $request->gender
+                'gender' => $request->gender,
+                'file_path' => url('public/uploads/' . $fileName)
             ]);
 
         $user = User::where('phone', $request->phone)->first();
