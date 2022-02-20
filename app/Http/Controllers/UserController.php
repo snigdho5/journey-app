@@ -45,7 +45,7 @@ class UserController extends Controller
             $user->save();
 
             return response([
-                'status' => 0,
+                'status' => 1,
                 'message' => 'Sign up successful!',
             ], 200);
         } else {

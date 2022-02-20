@@ -3,6 +3,8 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ActivityController;
+use App\Http\Controllers\AddActivityController;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,4 +33,6 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     //
     Route::post("update-user", [UserController::class, 'updateUser']);
     Route::post("logout", [UserController::class, 'logout']);
+    Route::get("activities", [ActivityController::class, 'index']);
+    Route::post("add-activity", [AddActivityController::class, 'create']);
 });
