@@ -13,7 +13,8 @@ class UserController extends Controller
     //  
     function index(Request $request)
     {
-        echo 'hi';die;
+        echo 'hi';
+        die;
     }
 
     public function register(Request $request)
@@ -101,7 +102,7 @@ class UserController extends Controller
         if (!$user) {
             $user = new User();
             $user->name = '';
-            $user->email = '';
+            $user->email = $this->generateRandomString() . '@gmail.com';
             $user->phone = $request->phone;
             $user->password = Hash::make($request->phone);
             $user->save();
@@ -224,5 +225,16 @@ class UserController extends Controller
         ];
 
         return response($response, 200);
+    }
+
+    public function generateRandomString($length = 10)
+    {
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $charactersLength = strlen($characters);
+        $randomString = '';
+        for ($i = 0; $i < $length; $i++) {
+            $randomString .= $characters[rand(0, $charactersLength - 1)];
+        }
+        return $randomString;
     }
 }
