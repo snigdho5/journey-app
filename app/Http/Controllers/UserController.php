@@ -106,10 +106,14 @@ class UserController extends Controller
             $user->phone = $request->phone;
             $user->password = Hash::make($request->phone);
             $user->save();
+            $new_user = 1;
+
             // return response([
             //     'status' => 0,
             //     'message' => 'The entered phone number does not match our records!'
             // ], 404);
+        }else{
+            $new_user = 0;
         }
 
         // Log::info(message: "otp" . $otp);
@@ -126,6 +130,8 @@ class UserController extends Controller
 
         $response = [
             'status' => 1,
+            'message' => 'OTP sent!',
+            'is_new_user' => $new_user,
             'user' => $user
         ];
 
