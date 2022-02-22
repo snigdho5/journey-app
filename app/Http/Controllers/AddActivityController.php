@@ -9,9 +9,37 @@ use Illuminate\Support\Facades\Validator;
 
 class AddActivityController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'user_id' => 'required|numeric',
+            'activity_date' => 'required|date'
+        ]);
+
+        if ($validator->fails()) {
+            return response([
+                'status' => 0,
+                'message' => 'Validation failed!'
+            ], 401);
+        }
+        $activity = AddActivity::where('user_id', $request->user_id)
+            ->where('activity_date', "$request->activity_date")
+            ->get();
+
+        if ($activity) {
+            $response = [
+                'status' => 1,
+                'message' => 'Activitites found!',
+                'respData' => $activity
+            ];
+        } else {
+            $response = [
+                'status' => 0,
+                'message' => 'Activity not found!',
+                'respData' => $activity
+            ];
+        }
+        return response($response, 200);
     }
 
     public function create(Request $request)
@@ -36,19 +64,19 @@ class AddActivityController extends Controller
         // print_r($user);die;
         // if (!$user) {
 
-            $addActivity = new AddActivity();
-            $addActivity->user_id = $request->user_id;
-            $addActivity->activity_id = $request->activity_id;
-            $addActivity->activity_date = $request->activity_date;
-            $addActivity->activity_time = $request->activity_time;
-            $addActivity->is_important = $request->is_important;
-            $addActivity->is_liked = $request->is_liked;
-            $addActivity->save();
+        $addActivity = new AddActivity();
+        $addActivity->user_id = $request->user_id;
+        $addActivity->activity_id = $request->activity_id;
+        $addActivity->activity_date = $request->activity_date;
+        $addActivity->activity_time = $request->activity_time;
+        $addActivity->is_important = $request->is_important;
+        $addActivity->is_liked = $request->is_liked;
+        $addActivity->save();
 
-            return response([
-                'status' => 1,
-                'message' => 'Activity added!',
-            ], 200);
+        return response([
+            'status' => 1,
+            'message' => 'Activity added!',
+        ], 200);
         // } else {
         //     return response([
         //         'status' => 0,

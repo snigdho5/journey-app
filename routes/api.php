@@ -33,6 +33,10 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     //
     Route::post("update-user", [UserController::class, 'updateUser']);
     Route::post("logout", [UserController::class, 'logout']);
+
     Route::get("activities", [ActivityController::class, 'index']);
+    Route::post("add-activity-name", [ActivityController::class, 'create']);
+    
     Route::post("add-activity", [AddActivityController::class, 'create']);
+    Route::post("get-activities-by-date", [AddActivityController::class, 'index']);
 });

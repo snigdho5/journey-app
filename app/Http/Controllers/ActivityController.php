@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
 use App\Models\Activity;
 use App\Http\Requests\StoreActivityRequest;
 use App\Http\Requests\UpdateActivityRequest;
+use Illuminate\Support\Facades\Validator;
 
 class ActivityController extends Controller
 {
@@ -17,20 +19,20 @@ class ActivityController extends Controller
     {
         $activity = Activity::where('status', 1)->get();
 
-        if($activity){
+        if ($activity) {
             $response = [
                 'status' => 1,
                 'message' => 'Found!',
                 'respData' => $activity
             ];
-        }else{
+        } else {
             $response = [
                 'status' => 0,
                 'message' => 'Not Found!',
                 'respData' => []
             ];
         }
-        
+
 
         return response($response, 200);
     }
@@ -40,9 +42,39 @@ class ActivityController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return response([
+                'status' => 0,
+                'message' => 'Validation failed!'
+            ], 401);
+        }
+        $activity = Activity::where('name', $request->name)->first();
+
+        if (!$activity) {
+            
+            $activity_a = new Activity();
+            $activity_a->name = $request->name;
+            $activity_a->save();
+
+            $response = [
+                'status' => 1,
+                'message' => 'Activity name added!',
+                'respData' => $activity_a
+            ];
+        } else {
+            $response = [
+                'status' => 0,
+                'message' => 'Activity already exists!',
+                'respData' => $activity
+            ];
+        }
+        return response($response, 200);
     }
 
     /**
