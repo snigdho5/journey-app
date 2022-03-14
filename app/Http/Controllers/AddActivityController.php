@@ -127,7 +127,7 @@ class AddActivityController extends Controller
                 $no_no_sum = AddActivity::where('user_id', $request->user_id)
                     ->where('activity_date', $request->activity_date)
                     ->where('is_important', 'no')
-                    ->where('is_liked', 'yes')
+                    ->where('is_liked', 'no')
                     ->sum('activity_time');
                 if ($no_no_sum > 0) {
                     $no_no_per = (($no_no_sum / 1440) * 100);
