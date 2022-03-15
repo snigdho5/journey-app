@@ -11,13 +11,13 @@ class PhotosController extends Controller
     //
     public function index(Request $request)
     {
-        $note = Photos::where('user_id', $request->user_id)->get();
+        $photo = Photos::where('user_id', $request->user_id)->get();
 
-        if ($note) {
+        if ($photo) {
             $response = [
                 'status' => 1,
                 'message' => 'Found!',
-                'respData' => $note
+                'respData' => $photo
             ];
         } else {
             $response = [
@@ -46,32 +46,32 @@ class PhotosController extends Controller
             ], 401);
         }
 
-        // $note = Photos::where('user_id', $request->user_id)->first();
+        // $photo = Photos::where('user_id', $request->user_id)->first();
 
-        // if (!$note) {
+        // if (!$photo) {
 
         if ($request->file()) {
             $fileName = time() . '_' . $request->file->getClientOriginalName();
             $request->file->move(public_path('uploads'), $fileName);
         }
 
-        $note_add = new Photos();
-        $note_add->user_id = $request->user_id;
-        $note_add->share_with = $request->share_with;
-        $note_add->photo_date = $request->photo_date;
-        $note_add->file_path = url('public/uploads/' . $fileName);
-        $note_add->save();
+        $photo_add = new Photos();
+        $photo_add->user_id = $request->user_id;
+        $photo_add->share_with = $request->share_with;
+        $photo_add->photo_date = $request->photo_date;
+        $photo_add->file_path = url('public/uploads/' . $fileName);
+        $photo_add->save();
 
         $response = [
             'status' => 1,
             'message' => 'Photo added!',
-            'respData' => $note_add
+            'respData' => $photo_add
         ];
         // } else {
         //     $response = [
         //         'status' => 0,
         //         'message' => 'photo already exists!',
-        //         'respData' => $note
+        //         'respData' => $photo
         //     ];
         // }
         return response($response, 200);
