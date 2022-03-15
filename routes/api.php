@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\AddActivityController;
+use App\Http\Controllers\NotesController;
+use App\Http\Controllers\PhotosController;
 
 /*
 |--------------------------------------------------------------------------
@@ -39,4 +41,10 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     
     Route::post("add-activity", [AddActivityController::class, 'create']);
     Route::post("get-activities-by-date", [AddActivityController::class, 'index']);
+
+    Route::post("add-note", [NotesController::class, 'create']);
+    Route::post("get-notes", [NotesController::class, 'index']);
+    
+    Route::post("add-photo", [PhotosController::class, 'create']);
+    Route::post("get-photos", [PhotosController::class, 'index']);
 });

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\AddActivity;
+use App\Models\Notes;
+use App\Models\Photos;
 use Illuminate\Support\Facades\Validator;
 use DateTime;
 use DateInterval;
@@ -25,6 +27,28 @@ class AddActivityController extends Controller
                 'message' => 'Validation failed!'
             ], 401);
         }
+
+        //notes
+        $note = Notes::where('user_id', $request->user_id)
+            ->where('note_date', $request->activity_date)->get();
+
+        if ($note) {
+            $notes = $note;
+        } else {
+            $notes = [];
+        }
+
+        //photos
+        $photo = Photos::where('user_id', $request->user_id)
+            ->where('photo_date', $request->activity_date)->get();
+
+        if ($photo) {
+            $photos = $photo;
+        } else {
+            $photos = [];
+        }
+
+
         // $activity = AddActivity::where('user_id', $request->user_id)
         //     ->where('activity_date', $request->activity_date)
         //     ->get();
@@ -153,14 +177,17 @@ class AddActivityController extends Controller
                     'no_yes_per' => $no_yes_per,
                     'no_no_per' => $no_no_per,
                     // 'activity' => $activity,
-
-                ]
+                ],
+                'notes' => $notes,
+                'photos' => $photos
             ];
         } else {
             $response = [
                 'status' => 0,
                 'message' => 'No activities found!',
-                'respData' => []
+                'respData' => [],
+                'notes' => $notes,
+                'photos' => $photos
             ];
         }
         return response($response, 200);
@@ -192,6 +219,7 @@ class AddActivityController extends Controller
         // $current = Carbon::now();
 
         if (isset($userActSum) && $userActSum > 0) {
+
 
             $addedMins = $userActSum + $request->activity_time;
             // echo $addedMins;die;
