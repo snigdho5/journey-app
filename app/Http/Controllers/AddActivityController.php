@@ -24,7 +24,7 @@ class AddActivityController extends Controller
         if ($validator->fails()) {
             return response([
                 'status' => 0,
-                'message' => 'Validation failed!'
+                'message' => json_encode($validator->errors())
             ], 401);
         }
 
@@ -207,7 +207,7 @@ class AddActivityController extends Controller
         if ($validator->fails()) {
             return response([
                 'status' => 0,
-                'message' => 'Validation failed!'
+                'message' => json_encode($validator->errors())
             ], 401);
         }
 

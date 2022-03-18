@@ -29,7 +29,7 @@ class UserController extends Controller
         if ($validator->fails()) {
             return response([
                 'status' => 0,
-                'message' => 'Validation failed!'
+                'message' => json_encode($validator->errors())
             ], 401);
         }
 
@@ -64,7 +64,7 @@ class UserController extends Controller
             'password' => 'required'
         ]);
         if ($validator->fails()) {
-            return response(['status' => 0, 'message' => 'Validation failed!'], 401);
+            return response(['status' => 0, 'message' => json_encode($validator->errors())], 401);
         }
 
         $user = User::where('email', $request->email)->first();
@@ -93,7 +93,7 @@ class UserController extends Controller
             'phone' => 'required|numeric|digits:10'
         ]);
         if ($validator->fails()) {
-            return response(['status' => 0, 'message' => 'Validation failed!'], 401);
+            return response(['status' => 0, 'message' => json_encode($validator->errors())], 401);
         }
 
         $otp = rand(100000, 999999);
@@ -155,7 +155,7 @@ class UserController extends Controller
             'otp' => 'required|numeric|digits:6'
         ]);
         if ($validator->fails()) {
-            return response(['status' => 0, 'message' => 'Validation failed!'], 401);
+            return response(['status' => 0, 'message' => json_encode($validator->errors())], 401);
         }
 
         $user = User::where([
@@ -201,7 +201,7 @@ class UserController extends Controller
             'file' => 'required|mimes:jpg,png,jpeg|max:2048'
         ]);
         if ($validator->fails()) {
-            return response(['status' => 0, 'message' => 'Validation failed!'], 401);
+            return response(['status' => 0, 'message' => json_encode($validator->errors())], 401);
         }
 
         $user = User::where([
